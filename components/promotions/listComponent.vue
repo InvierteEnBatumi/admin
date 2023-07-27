@@ -14,14 +14,22 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-btn  height="30" color="primary" class="rounded-xl" small :to="`/promotions/update/${item.id}`">
-            <v-icon color="white">mdi-pencil</v-icon>
+          <v-btn-toggle class="elevation-3">
+            <v-btn height="30" color="secondary"  small :to="`/promotions/update/${item.id}`">
+              <v-icon color="white">mdi-pencil</v-icon>
             </v-btn>
+            <v-btn color="secondary" @click="showPromo(item)" small height="30">
+              <v-icon color="white">mdi-magnify</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+
+
         </template>
       </v-data-table>
     </v-card-text>
-    <promotionsEditComponent v-if="modalUpdatePromo" :promo="promo" @promotionUpdated="$emit('retrievePromotions')"  v-model="modalUpdatePromo"></promotionsEditComponent>
- </generalCardComponent>
+    <promotionsShowComponent v-if="modalShowPromo" :promoId="promo" @promotionUpdated="$emit('retrievePromotions')"
+      v-model="modalShowPromo"></promotionsShowComponent>
+  </generalCardComponent>
 
 </template>
 
@@ -41,9 +49,12 @@
     },
     data() {
       return {
-        modalUpdatePromo:false,
-        promo:{},
+        modalShowPromo: false,
+        promo: {},
         headers: [{
+            text: 'ID',
+            value: 'id'
+          },{
             text: 'Nombre',
             value: 'name'
           },
@@ -75,19 +86,19 @@
           {
             text: 'Acciones',
             value: 'actions',
-            sortable: false
+            sortable: false,
+            align:'right'
           },
         ]
       }
     },
     methods: {
-      updatePromo(item){
-        this.promo = item
-        this.modalUpdatePromo = true
+      showPromo(item) {
+        this.promo = item.id
+        this.modalShowPromo = true
       }
     }
   }
-
 </script>
 
 <style>

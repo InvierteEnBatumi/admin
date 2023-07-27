@@ -11,7 +11,7 @@
                 <v-col class="col-12 col-md-9">
                   <v-row>
                     <v-col class="col-12">
-                      <FormsFieldsTextComponent v-model="promotion.name" required label="Nombre">
+                      <FormsFieldsTextComponent v-model="promotion.name" :rules="rules.required" label="Nombre">
                       </FormsFieldsTextComponent>
                     </v-col>
                     <v-col class="col-12">
@@ -21,7 +21,8 @@
                         <v-card-text>
                           <v-row>
                             <v-col class="col-12 col-md-6">
-                              <FormsFieldsTextComponent type="number" required v-model="promotion.price" label="Valor (USD)">
+                              <FormsFieldsTextComponent type="number" :rules="rules.required" v-model="promotion.price"
+                                label="Valor (USD)">
                               </FormsFieldsTextComponent>
                             </v-col>
                             <v-col class="col-12 col-md-6">
@@ -33,10 +34,183 @@
                         </v-card-text>
                       </GeneralCardComponent>
                     </v-col>
+                    <v-col class="col-12">
+                      <generalCardComponent flat>
+                        <v-card-title class="primary rounded-b-xl">
+                          <v-tabs :vertical="$vuetify.breakpoint.smAndDown" v-model="tab" hide-slider
+                            slider-color="primary" background-color="transparent" active-class="active-tab" grow>
+                            <v-tab class="font-weight-bold">
+                              Renta
+                            </v-tab>
+                            <v-tab class="font-weight-bold">
+                              Inversion
+                            </v-tab>
+
+                          </v-tabs>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-tabs-items v-model="tab">
+                            <v-tab-item class="pb-1 pt-1">
+                              <GeneralCardComponent outlined  v-if="tab==0">
+                                <v-card-text>
+                                  <v-row>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent v-model="rent.owner" label="Propietario">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" :rules="rules.required"
+                                        v-model="rent.rent_price" label="Precio de renta">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="text" v-model="rent.promotion" label="Promocion">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" :rules="rules.required"
+                                        v-model="rent.square_meters" label="Metros cuadrados">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" :rules="rules.required"
+                                        v-model="rent.estimated_annual_return" label="Retorno anual estimado(%) ">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" v-model="rent.amortization_time"
+                                        label="Tiempo de amortizacion (En meses)">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsSelectComponent type="text" :items="['Diario','Mensual','Anual']"
+                                        :rules="rules.required" v-model="rent.rent_type" label="Tipo de renta">
+                                      </FormsFieldsSelectComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="date" :rules="rules.required"
+                                        v-model="rent.purchase_date" label="Fecha de adquisicion">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="date" :rules="rules.required"
+                                        v-model="rent.start_of_management" label="Inicio de gestion">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-col class="col-12 col-md-12">
+                                      <GeneralCardComponent class="mt-0" outlined>
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Contrato
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="rentFile.contract" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+
+                                  </v-row>
+
+                                </v-card-text>
+                              </GeneralCardComponent>
+                            </v-tab-item>
+                            <v-tab-item class="pb-1 pt-1">
+                              <GeneralCardComponent outlined  v-if="tab==1">
+                                <v-card-text>
+                                  <v-row>
+                                    <v-col class="col-12 col-md-12">
+                                      <FormsFieldsTextComponent v-model="investment.owner" :rules="rules.required"
+                                        label="Propietario">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" :rules="rules.required"
+                                        v-model="investment.price" label="Valor de mercado (USD)">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="text" :rules="rules.required"
+                                        v-model="investment.promotion" label="Promocion">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number" :rules="rules.required"
+                                        v-model="investment.square_meters" label="Metros cuadrados">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <FormsFieldsTextComponent type="number"
+                                        v-model="investment.surplus_value_generated" :rules="rules.required"
+                                        label="Capital aportado">
+                                      </FormsFieldsTextComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Precontrato
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="investmentFile.precontract" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Factura de reserva
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="investmentFile.reservation_invoice" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Factura de entrada
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="investmentFile.sale_invoice" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Contrato de prestamo bancario
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="investmentFile.loan_contract" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+                                    <v-col class="col-12 col-md-6">
+                                      <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
+                                        <v-card-title class="text-subtitle-1 font-weight-regular">
+                                          Registro de propiedad
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <GeneralUploadFilesComponent v-model="investmentFile.property_registration" @delete="deleteFile()">
+                                        </GeneralUploadFilesComponent>
+                                      </GeneralCardComponent>
+                                    </v-col>
+
+                                  </v-row>
+
+                                </v-card-text>
+                              </GeneralCardComponent>
+                            </v-tab-item>
+
+                          </v-tabs-items>
+                        </v-card-text>
+                      </generalCardComponent>
+                    </v-col>
 
 
                     <v-col class="col-12">
-                      <FormsFieldsTextareaComponent v-model="promotion.description" required label="Descripcion">
+                      <FormsFieldsTextareaComponent v-model="promotion.description" :rules="rules.required"
+                        label="Descripcion">
                       </FormsFieldsTextareaComponent>
                     </v-col>
                     <v-col class="col-12">
@@ -46,18 +220,14 @@
                     </v-col>
 
                     <v-col class="col-12 col-md-6">
-                      <FormsFieldsTextComponent v-model="promotion.start_date" required label="Fecha de inicio"
-                        type="date">
+                      <FormsFieldsTextComponent v-model="promotion.start_date" :rules="rules.required"
+                        label="Fecha de inicio" type="date">
                       </FormsFieldsTextComponent>
                     </v-col>
                     <v-col class="col-12 col-md-6">
-                      <FormsFieldsTextComponent v-model="promotion.end_date" required label="Fecha de fin" type="date">
+                      <FormsFieldsTextComponent v-model="promotion.end_date" :rules="rules.required"
+                        label="Fecha de fin" type="date">
                       </FormsFieldsTextComponent>
-                    </v-col>
-                    <v-col class="col-12">
-                      <FormsFieldsSelectComponent label="Tipo" v-model="promotion.type"
-                        :items="['Alquiler','Inversion','Venta']">
-                      </FormsFieldsSelectComponent>
                     </v-col>
                     <v-col class="col-12" v-if="promotion.type!='Venta'">
                       <FormsFieldsSelectComponent multiple chips :items="clients" item-text="name" item-value="id"
@@ -98,15 +268,6 @@
                         </v-card-text>
                       </GeneralCardComponent>
                     </v-col>
-                    <v-col class="col-12 col-md-12">
-                  <GeneralCardComponent class="ma-3 mt-0 rounded-t-0">
-                    <v-card-title class="text-subtitle-1 font-weight-regular">
-                      Contratos
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <GeneralUploadFilesComponent v-model="file"></GeneralUploadFilesComponent>
-                  </GeneralCardComponent>
-                </v-col>
                   </v-row>
                 </v-col>
                 <v-col class="col-12 col-md-3">
@@ -146,18 +307,54 @@
     },
     data() {
       return {
-        file: [],
+        tab: 0,
+        files: [],
+
         main_picture: null,
+        investment: {
+          owner: '',
+          price: '',
+          promotion: '',
+          square_meters: 0,
+          contributed_capital: 0,
+          surplus_value_generated: 0,
+          outstanding_capital: 0,
+        },
+        investmentFile:{
+          precontract: [],
+          reservation_invoice: [],
+          sale_invoice: [],
+          loan_contract: [],
+          property_registration: [],
+        },
+        rent: {
+          owner: '',
+          rent_price: '',
+          promotion: '',
+          square_meters: 0,
+          contributed_capital: 0,
+          surplus_value_generated: 0,
+          outstanding_capital: 0,
+          start_of_management: '',
+          rent_type:'Diario'
+        },
+        rentFile:{
+          contract: [],
+        },
+        rules: {
+          required: [(v) => !!v || 'Este campo es requerido']
+        },
+        files: [],
         promotion: {
           name: '',
           description: '',
           start_date: '',
           end_date: '',
           progress: 'Cimentación',
-          type: 'Alquiler',
-          features: []
+          type: 'Renta',
+          features: [],
         },
-        successSnackbar:false,
+        successSnackbar: false,
         progressItems: [{
             text: 'Cimentación',
             value: 'Cimentación'
@@ -189,6 +386,8 @@
     created() {
       this.promotion.start_date = moment().format('YYYY-MM-DD')
       this.promotion.end_date = moment().add(7, 'days').format('YYYY-MM-DD')
+      this.promotion.purchase_date = moment().format('YYYY-MM-DD')
+      this.rent.start_of_management = moment().format('YYYY-MM-DD')
       this.getClients()
     },
     methods: {
@@ -201,18 +400,20 @@
         this.promotion.features.pop()
       },
       createPromotion() {
+        console.log(this.$refs.form.validate())
         if (this.$refs.form.validate()) {
           this.$axios.post('/promotions', {
-            data: this.promotion
+            data: this.promotion,
+
           }).then((data) => {
-            if (this.file) {
+            if (this.files.length > 0) {
               this.asociateFileToPromotion(data.data.data)
             }
-            if(this.main_picture){
-                this.asociateMainPictureToPromotion(data.data.data)
+            if (this.main_picture) {
+              this.asociateMainPictureToPromotion(data.data.data)
             }
             this.successEditSnackbar = true;
-        })
+          })
 
         }
       },
@@ -224,6 +425,16 @@
         formData.append('refId', promotion.id)
         formData.append('field', 'file')
         await this.$axios.post('/upload', formData)
+      },
+      async asociateFile(data,model, file,field){
+
+        let formData = new FormData()
+          formData.append('files', file)
+          formData.append('ref', `api::${model}.${model}`)
+          formData.append('refId', data.id)
+          formData.append('field', field)
+          await this.$axios.post('/upload', formData)
+
       },
       async asociateMainPictureToPromotion(promotion) {
         let formData = new FormData()
@@ -245,9 +456,19 @@
           })
       }
 
+    },
+    watch: {
+      tab(value) {
+        if (value == 0) {
+          this.promotion.type = 'Renta'
+        } else if (value == 1) {
+          this.promotion.type = 'Inversion'
+        } else if (value == 2) {
+          this.promotion.type = 'Venta'
+        }
+      }
     }
   }
-
 </script>
 
 <style>

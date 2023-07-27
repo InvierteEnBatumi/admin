@@ -21,7 +21,7 @@
               <v-col class="col-12">
                 <v-divider></v-divider>
               </v-col>
-              <v-col class="col-12 col-md-5">
+              <v-col class="col-12 col-md-3">
                 <FormsFieldsTextComponent label="Nombre" v-model="search.name" label-color="white--text">
                 </FormsFieldsTextComponent>
               </v-col>
@@ -29,7 +29,7 @@
                 <FormsFieldsSelectComponent :items="['Cimentación','Construcción','Black Frame','White Frame','Amueblado']" label="Progreso" v-model=search.progress label-color="white--text">
                 </FormsFieldsSelectComponent>
               </v-col>
-              <v-col class="col-12 col-md-2">
+              <v-col class="col-12 col-md-3">
                 <v-btn block color="secondary" class="mt-8 rounded-lg" @click="getPromotions" height="44">
                   <v-icon>mdi-magnify</v-icon>
                 </v-btn>

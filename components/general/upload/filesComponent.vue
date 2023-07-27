@@ -12,7 +12,7 @@
     <v-divider></v-divider>
     <v-card-text>
       <v-row>
-        <v-col class="col-md-3 col-12 mt-3" v-for="(file,index) in filesList" :key="`f${index}`">
+        <v-col class="col-md-12 col-12 mt-3" v-for="(file,index) in filesList" :key="`f${index}`">
           <v-card class="rounded-lg">
             <v-card-title>
               <span v-if="file.name">{{file.name.substr(0,7)}}</span>
@@ -100,7 +100,6 @@
 
       },
       checkIfImage(file) {
-        console.log(file)
         const checkIfImage = function (file) {
           if (file.includes('image')) {
             return true
@@ -108,6 +107,11 @@
             return false
           }
         }
+
+        if(file.url !=undefined) {
+          return false
+        }
+
         if (file.mime) {
           return checkIfImage(file.mime)
         } else {
