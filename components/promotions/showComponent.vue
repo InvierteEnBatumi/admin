@@ -22,7 +22,7 @@
               <v-row>
                 <v-col class="col-12">
                   <GeneralCardComponent>
-                    <v-img :src="`http://localhost:1337${promotion.main_picture.url}`"></v-img>
+                    <v-img :src="`https://batumi.descuentosya.uy${promotion.main_picture.url}`"></v-img>
                   </GeneralCardComponent>
                 </v-col>
                 <v-col class="col-12">
