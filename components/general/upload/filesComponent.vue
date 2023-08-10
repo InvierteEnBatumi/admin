@@ -12,7 +12,7 @@
     <v-divider></v-divider>
     <v-card-text>
       <v-row>
-        <v-col class="col-md-12 col-12 mt-3" v-for="(file,index) in filesList" :key="`f${index}`">
+        <v-col class="col-md-3 col-12 mt-3" v-for="(file,index) in filesList" :key="`f${index}`">
           <v-card class="rounded-lg">
             <v-card-title>
               <span v-if="file.name">{{file.name.substr(0,7)}}</span>
@@ -68,7 +68,7 @@
     methods: {
       getUrl(file) {
         if (file.url) {
-          return `http://164.92.69.180${file.url}`;
+          return `https://batumi.descuentosya.uy${file.url}`;
         } else {
           return URL.createObjectURL(file);
         }
@@ -81,10 +81,6 @@
         if (!files.length)
           return
 
-        if(!this.multiple) {
-          this.$emit('input', [...[...files]])
-          return
-        }
         this.$emit('input', [...this.value || [], ...[...files]])
       },
       deleteImg(file) {
